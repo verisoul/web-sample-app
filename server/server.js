@@ -1,22 +1,20 @@
+require("dotenv").config();
 const express = require('express');
 const fetch = require('node-fetch');
+const cors = require("cors");
+
 const app = express();
+let corsOptions = {
+  origin: process.env.CLIENT_ORIGIN || "http://localhost:3001 "
+};
 
-// TODO: possibly delete these
-// const path = require("path");
-// const DIST_DIR = path.join(__dirname, "build/static");
-// const HTML_FILE = path.join(DIST_DIR, "index.html");
-// app.use(express.static(DIST_DIR));
+app.use(cors(corsOptions));
+app.use(express.json());
 
-const VERISOUL_PROJECT_STR = 'Demo';
-
-// TODO: change this to a cname URL
-const API_URL = "https://i5yha6z92c.execute-api.us-east-1.amazonaws.com/test/session"
-
-// reach out to Verisoul to set up an API key and sandbox environment
+const API_URL = "https://api.verisoul.xyz"
 const headers = {
   'Content-Type': 'application/json',
-  'x-api-key': 'lRROqFxjdI6GQxXHYcA3ncvNYLZXe9la1QiGRLId'
+  'x-api-key': process.env.VERISOUL_API_KEY
 }
 
 app.get("/session", async (req, res) => {
@@ -28,8 +26,8 @@ app.get("/session", async (req, res) => {
     redirect: 'follow'
   };
 
-  const params = new URLSearchParams({VERISOUL_PROJECT_STR, sessionId});
-  const URL = API_URL + "?" + params.toString();
+  const params = new URLSearchParams({sessionId});
+  const URL = `${API_URL}/session?${params.toString()}`;
   let response = await fetch(URL, requestOptions);
 
   let {isSessionComplete, externalId, isBlocked, hasBlockedAccounts, numAccounts} = await response.json();
@@ -41,7 +39,6 @@ app.get("/session", async (req, res) => {
 
 app.post("/session", async (req, res) => {
   let raw = JSON.stringify({
-    "project": VERISOUL_PROJECT_STR,
     "externalId": req.query.externalId
   });
 
@@ -51,10 +48,14 @@ app.post("/session", async (req, res) => {
     body: raw
   };
 
-  let response = await fetch(API_URL, requestOptions)
+  let response = await fetch(`${API_URL}/session`, requestOptions)
   let {sessionId} = await response.json();
 
   res.status(200).send({sessionId})
 });
 
-app.listen(5001);
+
+const PORT = process.env.SERVER_DOCKER_PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});

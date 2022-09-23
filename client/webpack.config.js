@@ -3,7 +3,9 @@ const webpack = require('webpack');
 const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
+  target: 'web',
   entry: path.resolve(__dirname, 'src', 'index.js'),
+  watch: true,
   output: {
     path: path.resolve(__dirname, 'public/js'),
     filename: 'index.js',
@@ -52,18 +54,15 @@ module.exports = {
           to:  path.resolve(__dirname, 'public/js/auth-sdk'),
         },
       ],
-    })
+    }),
   ],
   devServer: {
-    port: 3000,
-    hot: true,
-    open: true,
-    // proxy: {
-    //   "/api": {
-    //     target: "http://localhost:3000",
-    //     router: () => "http://localhost:5000",
-    //     logLevel: "debug" /*optional*/,
-    //   },
-    // },
+    static: {
+      directory: path.join(__dirname, "public")
+    },
+    historyApiFallback: true,
+    host: '0.0.0.0',
+    port: 3001,
+    open: true
   },
 };

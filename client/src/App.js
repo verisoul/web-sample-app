@@ -1,18 +1,11 @@
 import Verisoul from '@verisoul/ui';
-import React, {useEffect, useState} from 'react';
-
-// TODO: make this part of a config
-const BACKEND = "https://reliable-build-ojswk.cloud.serverless.com"
+import React, {useState} from 'react';
 
 const App = () => {
     const [sessionId, setSessionId] = useState();
 
-    useEffect(() => {
-        initSession().catch(console.error);
-    }, [])
-
     const initSession = async () => {
-        const response = await fetch(BACKEND + `/session`);
+        const response = await fetch(`${process.env.SERVER_API_BASE_URL}/session`);
         const {sessionId} = await response.json();
         console.log('got session id')
         console.log(sessionId);
@@ -20,7 +13,7 @@ const App = () => {
     }
 
     const onComplete = async () => {
-        const response = await fetch(BACKEND + `/session?sessionId=${sessionId}`);
+        const response = await fetch(`${process.env.SERVER_API_BASE_URL}/session?sessionId=${sessionId}`);
         const result = await response.json();
 
         // do something based on session results
@@ -33,6 +26,8 @@ const App = () => {
 
     return (
         <div>
+            <h3>Sample Web App</h3>
+            <button onClick={initSession}>Start Onboarding</button>
             {sessionId
                 ? <Verisoul session={sessionId} project={"Demo"} eventHandler={eventHandler}
                             src={"/js/auth-sdk/facescan"}/>
