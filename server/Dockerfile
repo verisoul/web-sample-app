@@ -4,8 +4,8 @@ WORKDIR /server
 COPY package.json .
 
 # Download dependencies
-RUN yarn
+RUN npm install
 COPY . .
 
 # Start server
-CMD yarn start
+CMD npm start

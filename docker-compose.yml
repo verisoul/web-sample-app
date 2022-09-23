@@ -4,7 +4,7 @@ services:
   app-server:
     container_name: app-server
     build: ./server
-    env_file: ./.env
+    env_file: .env
     ports:
       - $SERVER_LOCAL_PORT:$SERVER_DOCKER_PORT
     environment:
@@ -21,6 +21,7 @@ services:
       context: ./client
       args:
         - NPM_TOKEN=$NPM_TOKEN # reach out to hello@verisoul.xyz for a npm token
+    env_file: .env
     ports:
       - $CLIENT_LOCAL_PORT:$CLIENT_DOCKER_PORT
     networks:

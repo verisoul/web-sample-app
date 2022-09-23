@@ -5,8 +5,8 @@ COPY . .
 
 # install dependencies
 ARG NPM_TOKEN
-RUN yarn
+RUN npm install
 RUN rm -f .npmrc
 
-CMD yarn start
+CMD npm start
 
