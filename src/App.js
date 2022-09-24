@@ -22,17 +22,23 @@ const App = () => {
         const response = await fetch(`http://localhost:4001/api/session?sessionId=${sessionId}`);
         const result = await response.json();
 
+        console.log(`got session result`);
+        console.log(result);
+
         // do something based on session results
     }
 
     const eventHandler = async (event) => {
         console.log(event);
-        if (event?.state?.step === 'complete') await onComplete();
+        if (event?.step === 'complete') await onComplete();
     }
 
     return (
         <div>
-            <Verisoul session={sessionId} eventHandler={eventHandler} src="/js/auth-sdk/facescan"/>
+            {sessionId
+                ? <Verisoul session={sessionId} eventHandler={eventHandler} src="/js/auth-sdk/facescan"/>
+                : null
+            }
             <h3>Sample Web App</h3>
             {/*<button onClick={initSession}>Start Onboarding</button>*/}
             {/*{sessionId*/}
