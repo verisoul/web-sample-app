@@ -38,9 +38,10 @@ app.get("/api/session", async (req, res) => {
   res.status(200).send({isSessionComplete, externalId, isBlocked, hasBlockedAccounts, numAccounts});
 });
 
-app.post("/api/session", async (req, res) => {
+app.get("/api/create-session", async (req, res) => {
   let raw = JSON.stringify({
-    "externalId": req.query.externalId
+    "externalId": req.query.externalId,
+    "project_id": 1
   });
 
   let requestOptions = {
@@ -49,10 +50,16 @@ app.post("/api/session", async (req, res) => {
     body: raw
   };
 
-  let response = await fetch(`${API_URL}/session`, requestOptions)
-  let {sessionId} = await response.json();
+  try{
+    let response = await fetch(`${API_URL}/session`, requestOptions)
+    let {sessionId} = await response.json();
 
-  res.status(200).send({sessionId})
+    res.status(200).send({sessionId})
+  } catch (e) {
+    res.status(500).send({error: e.message})
+  }
+
+
 });
 
 

@@ -7,7 +7,7 @@ const App = () => {
 
     useEffect(() => {
         const initSession = async () => {
-            const response = await fetch(`http://localhost:4001/api/session`);
+            const response = await fetch(`http://localhost:4001/api/create-session`);
             const {sessionId} = await response.json();
             console.log('got session id')
             console.log(sessionId);
