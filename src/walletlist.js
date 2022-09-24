@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 const WalletList = () => {
-    const [wallets, setWallets] = useState();
+    const [wallets, setWallets] = useState([]);
 
     useEffect(() => {
         getWallets().catch(console.error);
@@ -14,28 +14,28 @@ const WalletList = () => {
     }
 
     // Generate HTML table from wallets list
-    const walletList = wallets?.map((entry) => {
-        return (
-            <tr key={entry.index}>
-                <td>{entry.wallet}</td>
-            </tr>
-        )
-    });
 
-    // Create table header
-    const tableHeader = (
-        <tr>
-            <th>Wallet</th>
-        </tr>
-    );
+    const makeTable = () => {
+        const walletList = wallets?.map((entry, index) => {
+            return (
+                <tr key={index}>
+                    <td>{entry.wallet}</td>
+                </tr>
+            )
+        });
+        return walletList;
+    }
+
 
     return (
         <div>
             {wallets && wallets?.length > 0
                 ? <table>
                     <tbody>
-                    {tableHeader}
-                    {walletList}
+                    <tr>
+                        <th>Wallet</th>
+                    </tr>
+                    {makeTable()}
                     </tbody>
                 </table>
                 : null

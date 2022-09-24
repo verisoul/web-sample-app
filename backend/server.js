@@ -5,13 +5,13 @@ const cors = require("cors");
 
 const app = express();
 let corsOptions = {
-  origin: process.env.CLIENT_ORIGIN || "http://localhost:3003 "
+  origin: process.env.CLIENT_ORIGIN || "https://api-dev.verisoul.xyz"
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
 
-const API_URL = "http://localhost:3003/local"
+const API_URL = "https://api-dev.verisoul.xyz"
 const headers = {
   'Content-Type': 'application/json',
   'project_id': 1,

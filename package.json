@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "dotenv": "^10.0.0",
+    "@verisoul/ui": "^1.1.19",
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "node-fetch": "2.6.7"
+    "node-fetch": "2.6.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "scripts": {
     "start": "npm run clean && webpack --mode=development --progress & webpack serve --mode=development",
