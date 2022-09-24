@@ -5,19 +5,20 @@ const cors = require("cors");
 
 const app = express();
 let corsOptions = {
-  origin: process.env.CLIENT_ORIGIN || "http://localhost:3001 "
+  origin: process.env.CLIENT_ORIGIN || "http://localhost:3003 "
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
 
-const API_URL = "https://api.verisoul.xyz"
+const API_URL = "http://localhost:3003/local"
 const headers = {
   'Content-Type': 'application/json',
+  'project_id': 1,
   'x-api-key': process.env.VERISOUL_API_KEY
 }
 
-app.get("/session", async (req, res) => {
+app.get("/api/session", async (req, res) => {
   let sessionId = req.query.sessionId
 
   let requestOptions = {
@@ -37,7 +38,7 @@ app.get("/session", async (req, res) => {
   res.status(200).send({isSessionComplete, externalId, isBlocked, hasBlockedAccounts, numAccounts});
 });
 
-app.post("/session", async (req, res) => {
+app.post("/api/session", async (req, res) => {
   let raw = JSON.stringify({
     "externalId": req.query.externalId
   });
@@ -55,7 +56,7 @@ app.post("/session", async (req, res) => {
 });
 
 
-const PORT = process.env.SERVER_DOCKER_PORT || 5000;
+const PORT = process.env.SERVER_PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

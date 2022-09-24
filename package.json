@@ -1,14 +1,17 @@
 {
-  "name": "app-client",
+  "name": "web-sample-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@verisoul/ui": "^1.1.14",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "dotenv": "^10.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "node-fetch": "2.6.7"
   },
   "scripts": {
-    "start": "webpack --mode=development --progress & webpack serve --mode=development",
+    "start": "yarn clean && webpack --mode=development --progress & webpack serve --mode=development",
     "build": "yarn clean && webpack --mode=development --progress",
     "clean": "rm -rf public/js"
   },

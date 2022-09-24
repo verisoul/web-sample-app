@@ -60,9 +60,15 @@ module.exports = {
     static: {
       directory: path.join(__dirname, "public")
     },
+    proxy: {
+      "/api": {
+        target: "http://localhost:4001",
+        router: () => "http://localhost:5001",
+        logLevel: "debug" /*optional*/,
+      },
+    },
     historyApiFallback: true,
-    host: '0.0.0.0',
-    port: 3001,
+    port: 4001,
     open: true
   },
 };
