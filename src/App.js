@@ -1,5 +1,5 @@
 // import Verisoul from '@verisoul/ui';
-import Verisoul from '../../listmaker-ui/sample-app/verisoul'
+import Verisoul from 'verisoul';
 import React, {useEffect, useState} from 'react';
 
 const App = () => {

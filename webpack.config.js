@@ -10,6 +10,11 @@ module.exports = {
     path: path.resolve(__dirname, 'public/js'),
     filename: 'index.js',
   },
+  resolve: {
+    alias: {
+      'verisoul': `${__dirname}/src/verisoul`,
+    }
+  },
   module: {
     rules: [
       {
