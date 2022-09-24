@@ -1,6 +1,7 @@
 // import Verisoul from '@verisoul/ui';
 import Verisoul from 'verisoul';
 import React, {useEffect, useState} from 'react';
+import WalletList from "./walletlist";
 
 const App = () => {
     const [sessionId, setSessionId] = useState();
@@ -41,6 +42,7 @@ const App = () => {
             }
             <h3>Sample Web App</h3>
             <button onClick={initSession}>Start Onboarding</button>
+            <WalletList/>
         </div>
     );
 }
