@@ -27,13 +27,22 @@ app.get("/api/session", async (req, res) => {
     redirect: 'follow'
   };
 
-  const params = new URLSearchParams({sessionId});
-  const URL = `${API_URL}/session?${params.toString()}`;
+  const URL = `${API_URL}/session/${sessionId}`;
   let response = await fetch(URL, requestOptions);
 
   let {isSessionComplete, externalId, isBlocked, hasBlockedAccounts, numAccounts} = await response.json();
 
-  // Decision what to do with user session
+  // DECISIONING LOGIC SAMPLE, create your own here
+  if (numAccounts === 0) { // enroll user
+    let requestOptions = {
+      method: 'POST',
+      headers,
+      redirect: 'follow'
+    };
+
+    const URL = `${API_URL}/session/${sessionId}/enroll`;
+    await fetch(URL, requestOptions);
+  }
 
   res.status(200).send({isSessionComplete, externalId, isBlocked, hasBlockedAccounts, numAccounts});
 });
@@ -58,9 +67,23 @@ app.get("/api/create-session", async (req, res) => {
   } catch (e) {
     res.status(500).send({error: e.message})
   }
-
-
 });
+
+app.get("/api/wallet-list", async (req, res) => {
+  let requestOptions = {
+    method: 'GET',
+    headers
+  };
+
+  try{
+    let response = await fetch(`${API_URL}/users`, requestOptions)
+    let results = await response.json();
+
+    res.status(200).send(results);
+  } catch (e) {
+    res.status(500).send({error: e.message})
+  }
+})
 
 
 const PORT = process.env.SERVER_PORT || 5001;
