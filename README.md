@@ -1,7 +1,9 @@
 ## Verisoul Web Sample App
 
 ### Overview
-The purpose of this app is to demonstrate Verisoul's Javascript SDK by use of the npm module. The repository contains a [React](https://reactjs.org/) app that uses Verisoul NPM package `@verisoul/ui` alongside an [Express](https://expressjs.com/) API server. 
+The purpose of this app is to demonstrate Verisoul's Javascript SDK by use of the private npm module. The repository contains a [React](https://reactjs.org/) app that uses Verisoul NPM package `@verisoul/ui` alongside an [Express](https://expressjs.com/) API server.
+
+_To run the app a Verisoul API Key and NPM token are required._ Schedule a call [here](https://meetings.hubspot.com/henry-legard) to get set started. 
 
 ### Getting Started
 1. Clone the repository
