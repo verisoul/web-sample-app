@@ -1,31 +1,31 @@
-## Verisoul Web Sample App
+# Verisoul Web Sample App
 
-### Overview
+## Overview
 The purpose of this app is to demonstrate Verisoul's Javascript SDK by use of the private npm module. The repository contains a [React](https://reactjs.org/) app that uses Verisoul NPM package `@verisoul/ui` alongside an [Express](https://expressjs.com/) API server.
 
 _To run the app a Verisoul API Key and NPM token are required._ Schedule a call [here](https://meetings.hubspot.com/henry-legard) to get set started. 
 
-### Getting Started
+## Getting Started
 1. Clone the repository
-```angular2html
+```bash
 git clone https://github.com/verisoul/web-sample-app.git && cd web-sample-app
 ```
 2. Copy `.env.example` to `.env` and fill in the `VERISOUL_API_KEY` and `NPM_TOKEN` values
-```angular2html
+```bash
 cp .env.example .env
 ```
 3. Install dependencies
-```angular2html
+```bash
 npm install
 ```
 4. Start the app server locally at `http://localhost:5001`
-```angular2html
+```bash
 node backend/server.js
 ```
 5. Run the app on your browser at `http://localhost:4001`
-```angular2html
+```bash
 npm start
 ```
 
-### Questions and Feedback
+## Questions and Feedback
 Comprehensive documentation about Verisoul's Javascript SDK and API can be found at [docs.verisoul.xyz](https://docs.verisoul.xyz/). Additionally, reach out to Verisoul at [support@verisoul.xyz](mailto:support@verisoul.xyz) for any questions or feedback.
