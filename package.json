@@ -12,7 +12,7 @@
     "react-dom": "^18.2.0"
   },
   "scripts": {
-    "start": "npm run clean && webpack --mode=development --progress & webpack serve --mode=development",
+    "start": "npm run clean && webpack --mode=development --progress & webpack serve --mode=development & node backend/server.js",
     "build": "npm clean && webpack --mode=development --progress",
     "clean": "rm -rf public/js"
   },

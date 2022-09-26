@@ -18,11 +18,7 @@ cp .env.example .env
 ```bash
 npm install
 ```
-4. Start the app server locally at `http://localhost:5001`
-```bash
-node backend/server.js
-```
-5. Run the app on your browser at `http://localhost:4001`
+4. Run the app at `http://localhost:4001`
 ```bash
 npm start
 ```
