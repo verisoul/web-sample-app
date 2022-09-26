@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "npm run clean && webpack --mode=development --progress & webpack serve --mode=development",
-    "build": "yarn clean && webpack --mode=development --progress",
+    "build": "npm clean && webpack --mode=development --progress",
     "clean": "rm -rf public/js"
   },
   "eslintConfig": {

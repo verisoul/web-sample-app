@@ -8,34 +8,40 @@ const WalletList = () => {
     }, []);
 
     const getWallets = async () => {
-        const response = await fetch(`http://localhost:4001/api/wallet-list`);
-        const walletList = await response.json();
-        setWallets(walletList)
+        try {
+            const response = await fetch(`http://localhost:4001/api/wallet-list`);
+            if (!response.ok) {
+                throw new Error(`Failed to get verified wallets: ${response.status}`);
+            }
+
+            const wallets = await response.json();
+            setWallets(wallets);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
-    // Generate HTML table from wallets list
-
-    const makeTable = () => {
-        const walletList = wallets?.map((entry, index) => {
+    const makeWalletRows = () => {
+        const walletRows = wallets?.map((entry, index) => {
             return (
                 <tr key={index}>
                     <td>{entry.wallet}</td>
                 </tr>
             )
         });
-        return walletList;
+        return walletRows;
     }
 
 
     return (
         <div>
             {wallets && wallets?.length > 0
-                ? <table>
+                ? <table className={'list'}>
                     <tbody>
                     <tr>
-                        <th>Wallet</th>
+                        <th>Verified Wallets</th>
                     </tr>
-                    {makeTable()}
+                    {makeWalletRows()}
                     </tbody>
                 </table>
                 : null

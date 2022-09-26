@@ -55,7 +55,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: `src/auth-sdk`,
+          from: path.resolve(__dirname, 'src/verisoul/auth-sdk'),
           to:  path.resolve(__dirname, 'public/js/auth-sdk'),
         },
       ],

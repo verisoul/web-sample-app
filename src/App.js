@@ -1,48 +1,60 @@
-import Verisoul from '@verisoul/ui';
-// import Verisoul from 'verisoul';
-import React, {useEffect, useState} from 'react';
+// import Verisoul from '@verisoul/ui';
+import Verisoul from 'verisoul';
+import React, {useState} from 'react';
 import WalletList from "./walletlist";
+
+// TODO: move base API URL to config
 
 const App = () => {
     const [sessionId, setSessionId] = useState();
     const [showVerisoul, setShowVerisoul] = useState(false);
 
-    const initSession = async () => {
-        const response = await fetch(`http://localhost:4001/api/create-session`);
-        const {sessionId} = await response.json();
-        console.log('got session id')
-        console.log(sessionId);
-        setSessionId(sessionId);
-        setShowVerisoul(true);
-    }
+    const initVerisoul = async () => {
+        try {
+            const response = await fetch(`http://localhost:4001/api/create-session`);
+            if (!response.ok) {
+                throw new Error(`failed to init Verisoul session: ${response.status}`);
+            }
 
-    const onComplete = async () => {
-        // allow time to read message
-        setTimeout(() => {
-            setShowVerisoul(false);
-        }, 3000);
+            const {sessionId} = await response.json();
 
-        const response = await fetch(`http://localhost:4001/api/session?sessionId=${sessionId}`);
-        const result = await response.json();
-
-        console.log(`got session result`);
-        console.log(result);
+            setSessionId(sessionId);
+            setShowVerisoul(true);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     const eventHandler = async (event) => {
-        console.log(event);
-        if (event?.step === 'Complete') await onComplete();
+        if (event?.step === 'Complete') {
+            try {
+                const response = await fetch(`http://localhost:4001/api/session?sessionId=${event?.session}`);
+                if (!response.ok) {
+                    throw new Error(`failed to get Verisoul session: ${response.status}`);
+                }
+
+                setTimeout(() => { // show the completed screen for a few seconds
+                    setShowVerisoul(false);
+                }, 3000);
+            } catch (err) {
+                console.error(err);
+            }
+        }
     }
 
     return (
         <div>
             {showVerisoul && sessionId
-                ? <Verisoul session={sessionId} eventHandler={eventHandler} src="/js/auth-sdk/facescan"/>
-                : null
+                ? <Verisoul session={sessionId}
+                            eventHandler={eventHandler}
+                            models={'/js/auth-sdk/facescan'}
+                            environment={'local'}/>
+                : <div className={'app'}>
+                    <h1>Verisoul Sample Web App</h1>
+                    <button onClick={initVerisoul}>Verify Wallet</button>
+                    <WalletList/>
+                </div>
             }
-            <h3>Sample Web App</h3>
-            <button onClick={initSession}>Start Onboarding</button>
-            <WalletList/>
         </div>
     );
 }

@@ -4,14 +4,18 @@ const fetch = require('node-fetch');
 const cors = require("cors");
 
 const app = express();
+// let corsOptions = {
+//   origin: process.env.CLIENT_ORIGIN || "https://api-dev.verisoul.xyz"
+// };
 let corsOptions = {
-  origin: process.env.CLIENT_ORIGIN || "https://api-dev.verisoul.xyz"
+  origin: process.env.CLIENT_ORIGIN || "http://localhost:3003"
 };
+
 
 app.use(cors(corsOptions));
 app.use(express.json());
 
-const API_URL = "https://api-dev.verisoul.xyz"
+const API_URL = "http://localhost:3003/local"
 const headers = {
   'Content-Type': 'application/json',
   'project_id': 1,
