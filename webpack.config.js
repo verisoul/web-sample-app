@@ -10,11 +10,6 @@ module.exports = {
     path: path.resolve(__dirname, 'public/js'),
     filename: 'index.js',
   },
-  // resolve: {
-  //   alias: {
-  //     'verisoul': `${__dirname}/src/verisoul`,
-  //   }
-  // },
   module: {
     rules: [
       {
@@ -60,14 +55,6 @@ module.exports = {
         },
       ],
     }),
-    // new CopyPlugin({
-    //   patterns: [
-    //     {
-    //       from: path.resolve(__dirname, 'src/verisoul/auth-sdk'),
-    //       to:  path.resolve(__dirname, 'public/js/auth-sdk'),
-    //     },
-    //   ],
-    // }),
   ],
   devServer: {
     static: {
