@@ -1,4 +1,5 @@
-import Verisoul from '@verisoul/ui';
+// import Verisoul from '@verisoul/ui';
+import Verisoul from './verisoul';
 import React, {useState} from 'react';
 import WalletList from "./walletlist";
 
@@ -8,7 +9,7 @@ const App = () => {
 
     const initVerisoul = async () => {
         try {
-            const response = await fetch(`http://localhost:4001/api/create-session`);
+            const response = await fetch(`http://localhost:4001/api/session`);
             if (!response.ok) {
                 throw new Error(`failed to init Verisoul session: ${response.status}`);
             }
@@ -25,7 +26,7 @@ const App = () => {
     const eventHandler = async (event) => {
         if (event?.step === 'Complete') {
             try {
-                const response = await fetch(`http://localhost:4001/api/session?sessionId=${event?.session}`);
+                const response = await fetch(`http://localhost:4001/api/account/${event?.accountId}`);
                 if (!response.ok) {
                     throw new Error(`failed to get Verisoul session: ${response.status}`);
                 }
@@ -44,8 +45,8 @@ const App = () => {
             {showVerisoul && sessionId
                 ? <Verisoul session={sessionId}
                             eventHandler={eventHandler}
-                            models={'/js/auth-sdk/facescan'}
-                            environment={'dev'}/>
+                            models={'/js/auth-sdk'}
+                            environment={'local'}/>
                 : <div className={'app'}>
                     <h1>Verisoul Sample Web App</h1>
                     <button onClick={initVerisoul}>Verify Wallet</button>
