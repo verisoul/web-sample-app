@@ -1,12 +1,29 @@
-## TODO
+## Verisoul Web Sample App
 
-More details coming soon
+### Overview
+The purpose of this app is to demonstrate Verisoul's Javascript SDK by use of the npm module. The repository contains a [React](https://reactjs.org/) app that uses Verisoul NPM package `@verisoul/ui` alongside an [Express](https://expressjs.com/) API server. 
 
-This repo contains code for [the article written on Dev.to](https://dev.to/sanamumtaz/webpack-dev-server-setting-up-proxy-59bk) describing steps for setting up `webpack-dev-server` to connect React frontend to Node.js/Express backend by **proxy**ing the requests.
+### Getting Started
+1. Clone the repository
+```angular2html
+git clone https://github.com/verisoul/web-sample-app.git && cd web-sample-app
+```
+2. Copy `.env.example` to `.env` and fill in the `VERISOUL_API_KEY` and `NPM_TOKEN` values
+```angular2html
+cp .env.example .env
+```
+3. Install dependencies
+```angular2html
+npm install
+```
+4. Start the app server locally at `http://localhost:5001`
+```angular2html
+node backend/server.js
+```
+5. Run the app on your browser at `http://localhost:4001`
+```angular2html
+npm start
+```
 
-## Getting Started
-
-- Clone the repository.
-- `yarn start` to run the app in development mode. Opens on `localhost:3000`.
-- `yarn build` builds the app for production to the `build` folder.
-- `node backend/server.js` starts the backend on `localhost:5000`.
+### Questions and Feedback
+Comprehensive documentation about Verisoul's Javascript SDK and API can be found at [docs.verisoul.xyz](https://docs.verisoul.xyz/). Additionally, reach out to Verisoul at [support@verisoul.xyz](mailto:support@verisoul.xyz) for any questions or feedback.
