@@ -10,11 +10,11 @@ module.exports = {
     path: path.resolve(__dirname, 'public/js'),
     filename: 'index.js',
   },
-  resolve: {
-    alias: {
-      'verisoul': `${__dirname}/src/verisoul`,
-    }
-  },
+  // resolve: {
+  //   alias: {
+  //     'verisoul': `${__dirname}/src/verisoul`,
+  //   }
+  // },
   module: {
     rules: [
       {
@@ -55,11 +55,19 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, 'src/verisoul/auth-sdk'),
+          from: path.resolve(__dirname, 'node_modules/@verisoul/ui/auth-sdk'),
           to:  path.resolve(__dirname, 'public/js/auth-sdk'),
         },
       ],
     }),
+    // new CopyPlugin({
+    //   patterns: [
+    //     {
+    //       from: path.resolve(__dirname, 'src/verisoul/auth-sdk'),
+    //       to:  path.resolve(__dirname, 'public/js/auth-sdk'),
+    //     },
+    //   ],
+    // }),
   ],
   devServer: {
     static: {
@@ -69,7 +77,7 @@ module.exports = {
       "/api": {
         target: "http://localhost:4001",
         router: () => "http://localhost:5001",
-        logLevel: "debug" /*optional*/,
+        logLevel: "debug",
       },
     },
     historyApiFallback: true,

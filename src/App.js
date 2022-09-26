@@ -1,9 +1,6 @@
-// import Verisoul from '@verisoul/ui';
-import Verisoul from 'verisoul';
+import Verisoul from '@verisoul/ui';
 import React, {useState} from 'react';
 import WalletList from "./walletlist";
-
-// TODO: move base API URL to config
 
 const App = () => {
     const [sessionId, setSessionId] = useState();
@@ -48,7 +45,7 @@ const App = () => {
                 ? <Verisoul session={sessionId}
                             eventHandler={eventHandler}
                             models={'/js/auth-sdk/facescan'}
-                            environment={'local'}/>
+                            environment={'dev'}/>
                 : <div className={'app'}>
                     <h1>Verisoul Sample Web App</h1>
                     <button onClick={initVerisoul}>Verify Wallet</button>

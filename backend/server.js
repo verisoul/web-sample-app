@@ -2,95 +2,98 @@ require("dotenv").config();
 const express = require('express');
 const fetch = require('node-fetch');
 const cors = require("cors");
-
 const app = express();
-// let corsOptions = {
-//   origin: process.env.CLIENT_ORIGIN || "https://api-dev.verisoul.xyz"
-// };
-let corsOptions = {
-  origin: process.env.CLIENT_ORIGIN || "http://localhost:3003"
-};
 
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
-const API_URL = "http://localhost:3003/local"
+const API_URL = process.env.VERISOUL_API_URL;
 const headers = {
-  'Content-Type': 'application/json',
-  'project_id': 1,
-  'x-api-key': process.env.VERISOUL_API_KEY
+    'Content-Type': 'application/json',
+    'project_id': 1,
+    'x-api-key': process.env.VERISOUL_API_KEY
 }
 
 app.get("/api/session", async (req, res) => {
-  let sessionId = req.query.sessionId
+    let sessionId = req.query.sessionId
 
-  let requestOptions = {
-    method: 'GET',
-    headers,
-    redirect: 'follow'
-  };
+    try {
+        let response = await fetch(`${API_URL}/session/${sessionId}`, {
+            method: 'GET',
+            headers,
+            redirect: 'follow'
+        });
+        if (!response.ok) {
+            throw new Error(`failed to get Verisoul session: ${response.status}`);
+        }
 
-  const URL = `${API_URL}/session/${sessionId}`;
-  let response = await fetch(URL, requestOptions);
+        let {isSessionComplete, externalId, isBlocked, hasBlockedAccounts, numAccounts} = await response.json();
 
-  let {isSessionComplete, externalId, isBlocked, hasBlockedAccounts, numAccounts} = await response.json();
+        // DECISIONING LOGIC SAMPLE, customize your own logic here
+        if (numAccounts === 0) { // if user is unique, then enroll them
+            let enroll = await fetch(`${API_URL}/session/${sessionId}/enroll`, {
+                method: 'POST',
+                headers,
+                redirect: 'follow'
+            });
 
-  // DECISIONING LOGIC SAMPLE, create your own here
-  if (numAccounts === 0) { // enroll user
-    let requestOptions = {
-      method: 'POST',
-      headers,
-      redirect: 'follow'
-    };
+            if (!enroll.ok) {
+                throw new Error(`failed to enroll Verisoul session: ${enroll.status}`);
+            }
+        }
 
-    const URL = `${API_URL}/session/${sessionId}/enroll`;
-    await fetch(URL, requestOptions);
-  }
+        res.status(200).send({isSessionComplete, externalId, isBlocked, hasBlockedAccounts, numAccounts});
+    } catch (err) {
+        console.error(err);
 
-  res.status(200).send({isSessionComplete, externalId, isBlocked, hasBlockedAccounts, numAccounts});
+        res.status(500).send({error: err.message});
+    }
 });
 
 app.get("/api/create-session", async (req, res) => {
-  let raw = JSON.stringify({
-    "externalId": req.query.externalId,
-    "project_id": 1
-  });
+    try {
+        let response = await fetch(`${API_URL}/session`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+                "externalId": req.query.externalId,
+            })
+        });
 
-  let requestOptions = {
-    method: 'POST',
-    headers,
-    body: raw
-  };
+        if (!response.ok) {
+            throw new Error(`failed to create Verisoul session: ${response.status}`);
+        }
 
-  try{
-    let response = await fetch(`${API_URL}/session`, requestOptions)
-    let {sessionId} = await response.json();
+        let {sessionId} = await response.json();
 
-    res.status(200).send({sessionId})
-  } catch (e) {
-    res.status(500).send({error: e.message})
-  }
+        res.status(200).send({sessionId})
+    } catch (err) {
+        res.status(500).send({error: err.message})
+    }
 });
 
 app.get("/api/wallet-list", async (req, res) => {
-  let requestOptions = {
-    method: 'GET',
-    headers
-  };
+    ;
+    try {
+        let response = await fetch(`${API_URL}/users`, {
+            method: 'GET',
+            headers
+        });
 
-  try{
-    let response = await fetch(`${API_URL}/users`, requestOptions)
-    let results = await response.json();
+        if (!response.ok) {
+            throw new Error(`failed to get wallet list: ${response.status}`);
+        }
 
-    res.status(200).send(results);
-  } catch (e) {
-    res.status(500).send({error: e.message})
-  }
+        let results = await response.json();
+
+        res.status(200).send(results);
+    } catch (err) {
+        res.status(500).send({error: err.message})
+    }
 })
 
 
 const PORT = process.env.SERVER_PORT || 5001;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+    console.log(`Server is running on port ${PORT}.`);
 });
