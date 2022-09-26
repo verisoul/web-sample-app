@@ -50,7 +50,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: `src/auth-sdk`,
+          from: path.resolve(__dirname, 'node_modules/@verisoul/ui/auth-sdk'),
           to:  path.resolve(__dirname, 'public/js/auth-sdk'),
         },
       ],
@@ -64,7 +64,7 @@ module.exports = {
       "/api": {
         target: "http://localhost:4001",
         router: () => "http://localhost:5001",
-        logLevel: "debug" /*optional*/,
+        logLevel: "debug",
       },
     },
     historyApiFallback: true,
