@@ -4,8 +4,9 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   target: 'web',
-  entry: path.resolve(__dirname, 'src', 'index.js'),
   watch: true,
+  entry: path.resolve(__dirname, 'src', 'index.js'),
+  stats: {warnings:false},
   output: {
     path: path.resolve(__dirname, 'public/js'),
     filename: 'index.js',
@@ -13,7 +14,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js)x?$/,
+        test: /\.(jsx|js|mjs|ejs|cjs|ts)$/,
         exclude: /node_modules/,
         use: [
           {

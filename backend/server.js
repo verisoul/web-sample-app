@@ -9,31 +9,56 @@ app.use(express.json());
 
 const API_URL = process.env.VERISOUL_API_URL;
 const headers = {
-    'Content-Type': 'application/json',
     'project_id': 1,
     'x-api-key': process.env.VERISOUL_API_KEY
-}
+};
 
 app.get("/api/session", async (req, res) => {
-    let sessionId = req.query.sessionId
-
     try {
-        let response = await fetch(`${API_URL}/session/${sessionId}`, {
+        // For more information on creating a session token
+        // See https://docs.verisoul.xyz/reference/api-reference/session-token
+        let response = await fetch(`${API_URL}/session`, {
+            method: 'POST',
+            headers
+        });
+
+        if (!response.ok) {
+            throw new Error(`failed to create Verisoul session: ${response.status}`);
+        }
+
+        let {sessionToken} = await response.json();
+
+        res.status(200).send({sessionToken})
+    } catch (err) {
+        res.status(500).send({error: err.message})
+    }
+});
+
+app.get("/api/account/:accountId", async (req, res) => {
+    try {
+        let accountId = req.params?.accountId;
+        let response = await fetch(`${API_URL}/account/${accountId}`, {
             method: 'GET',
             headers,
             redirect: 'follow'
         });
         if (!response.ok) {
-            throw new Error(`failed to get Verisoul session: ${response.status}`);
+            throw new Error(`failed to get Verisoul account: ${response.status}`);
         }
 
-        let {isSessionComplete, externalId, isBlocked, hasBlockedAccounts, numAccounts} = await response.json();
+        // See https://docs.verisoul.xyz/reference/api-reference/accounts
+        // for other fields in the response like isBlocked, hasBlockedAccounts, etc.
+        let {attributes, numAccounts} = await response.json();
 
-        // DECISIONING LOGIC SAMPLE, customize your own logic here
-        if (numAccounts === 0) { // if user is unique, then enroll them
-            let enroll = await fetch(`${API_URL}/session/${sessionId}/enroll`, {
+        // DECISIONING LOGIC SAMPLE
+        // customize your own logic here
+        if (numAccounts === 0) { // if user is unique (has no other accounts in the project), then enroll
+            let enroll = await fetch(`${API_URL}/account/${accountId}/enroll`, {
                 method: 'POST',
                 headers,
+                body: JSON.stringify({
+                    "externalId": req.query.externalId,
+                }),
                 redirect: 'follow'
             });
 
@@ -42,7 +67,7 @@ app.get("/api/session", async (req, res) => {
             }
         }
 
-        res.status(200).send({isSessionComplete, externalId, isBlocked, hasBlockedAccounts, numAccounts});
+        res.status(200).send(attributes);
     } catch (err) {
         console.error(err);
 
@@ -50,32 +75,9 @@ app.get("/api/session", async (req, res) => {
     }
 });
 
-app.get("/api/create-session", async (req, res) => {
-    try {
-        let response = await fetch(`${API_URL}/session`, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({
-                "externalId": req.query.externalId,
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error(`failed to create Verisoul session: ${response.status}`);
-        }
-
-        let {sessionId} = await response.json();
-
-        res.status(200).send({sessionId})
-    } catch (err) {
-        res.status(500).send({error: err.message})
-    }
-});
-
 app.get("/api/wallet-list", async (req, res) => {
-    ;
     try {
-        let response = await fetch(`${API_URL}/users`, {
+        let response = await fetch(`${API_URL}/accounts`, {
             method: 'GET',
             headers
         });
@@ -86,12 +88,49 @@ app.get("/api/wallet-list", async (req, res) => {
 
         let results = await response.json();
 
+        // filter out accounts that are not enrolled
+        results = results.filter(account => account?.isEnrolled);
+
         res.status(200).send(results);
     } catch (err) {
         res.status(500).send({error: err.message})
     }
-})
+});
 
+app.get("/api/account/:accountId/toggle", async (req, res) => {
+    try {
+        let accountId = req.params?.accountId;
+        let response = await fetch(`${API_URL}/account/${accountId}`, {
+            method: 'GET',
+            headers,
+            redirect: 'follow'
+        });
+        if (!response.ok) {
+            throw new Error(`failed to get Verisoul account: ${response.status}`);
+        }
+
+        let {isBlocked} = await response.json();
+        let action = 'block';
+        if (isBlocked) action = 'unblock';
+
+        // For more information on block/unblocking accounts
+        // see https://docs.verisoul.xyz/reference/api-reference/blocklist
+        let toggle = await fetch(`${API_URL}/${action}/${accountId}`, {
+            method: 'POST',
+            headers,
+            redirect: 'follow'
+        });
+
+        if (!toggle.ok) {
+            throw new Error(`failed to toggle Verisoul account: ${toggle.status}`);
+        }
+
+        let results = await toggle.json();
+        res.status(200).send(results);
+    } catch (err) {
+        res.status(500).send({error: err.message})
+    }
+});
 
 const PORT = process.env.SERVER_PORT || 5001;
 app.listen(PORT, () => {

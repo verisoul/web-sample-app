@@ -1,21 +1,22 @@
-import Verisoul from '@verisoul/ui';
 import React, {useState} from 'react';
-import WalletList from "./walletlist";
+import Verisoul from '@verisoul/ui';
+import WalletList from './walletlist';
 
 const App = () => {
-    const [sessionId, setSessionId] = useState();
+    const [sessionToken, setSessionToken] = useState();
     const [showVerisoul, setShowVerisoul] = useState(false);
 
     const initVerisoul = async () => {
         try {
-            const response = await fetch(`http://localhost:4001/api/create-session`);
+            const response = await fetch(`http://localhost:4001/api/session`);
             if (!response.ok) {
                 throw new Error(`failed to init Verisoul session: ${response.status}`);
             }
 
-            const {sessionId} = await response.json();
+            const {sessionToken} = await response.json();
+            console.log(sessionToken);
 
-            setSessionId(sessionId);
+            setSessionToken(sessionToken);
             setShowVerisoul(true);
         } catch (err) {
             console.error(err);
@@ -25,9 +26,9 @@ const App = () => {
     const eventHandler = async (event) => {
         if (event?.step === 'Complete') {
             try {
-                const response = await fetch(`http://localhost:4001/api/session?sessionId=${event?.session}`);
+                const response = await fetch(`http://localhost:4001/api/account/${event?.data?.account_id}`);
                 if (!response.ok) {
-                    throw new Error(`failed to get Verisoul session: ${response.status}`);
+                    throw new Error(`failed to get Verisoul account: ${response.status}`);
                 }
 
                 setTimeout(() => { // show the completed screen for a few seconds
@@ -41,11 +42,11 @@ const App = () => {
 
     return (
         <div>
-            {showVerisoul && sessionId
-                ? <Verisoul session={sessionId}
+            {showVerisoul && sessionToken
+                ? <Verisoul session={sessionToken}
                             eventHandler={eventHandler}
-                            models={'/js/auth-sdk/facescan'}
-                            environment={'dev'}/>
+                            models={'/js/auth-sdk'}
+                            environment={'sandbox'}/>
                 : <div className={'app'}>
                     <h1>Verisoul Sample Web App</h1>
                     <button onClick={initVerisoul}>Verify Wallet</button>
