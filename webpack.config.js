@@ -6,7 +6,7 @@ module.exports = {
   target: 'web',
   watch: true,
   entry: path.resolve(__dirname, 'src', 'index.js'),
-  // stats: {warnings:false},
+  stats: {warnings:false},
   output: {
     path: path.resolve(__dirname, 'public/js'),
     filename: 'index.js',
@@ -51,19 +51,11 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, 'src/verisoul/auth-sdk'),
+          from: path.resolve(__dirname, 'node_modules/@verisoul/ui/auth-sdk'),
           to:  path.resolve(__dirname, 'public/js/auth-sdk'),
         },
       ],
     }),
-    // new CopyPlugin({
-    //   patterns: [
-    //     {
-    //       from: path.resolve(__dirname, 'node_modules/@verisoul/ui/auth-sdk'),
-    //       to:  path.resolve(__dirname, 'public/js/auth-sdk'),
-    //     },
-    //   ],
-    // }),
   ],
   devServer: {
     static: {

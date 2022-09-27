@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-// import Verisoul from '@verisoul/ui';
-import Verisoul from './verisoul';
+import Verisoul from '@verisoul/ui';
 import WalletList from './walletlist';
 
 const App = () => {
@@ -47,7 +46,7 @@ const App = () => {
                 ? <Verisoul session={sessionToken}
                             eventHandler={eventHandler}
                             models={'/js/auth-sdk'}
-                            environment={'local'}/>
+                            environment={'sandbox'}/>
                 : <div className={'app'}>
                     <h1>Verisoul Sample Web App</h1>
                     <button onClick={initVerisoul}>Verify Wallet</button>

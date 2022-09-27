@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@verisoul/ui": "^1.1.20",
+    "@verisoul/ui": "^1.1.21",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
@@ -12,7 +12,7 @@
     "react-dom": "^18.2.0"
   },
   "scripts": {
-    "start": "npm run clean && webpack --mode=development --progress --stats-error-details & webpack serve --mode=development & node backend/server.js",
+    "start": "npm run clean && webpack --mode=development --progress --stats-error-details & webpack serve --mode=development",
     "build": "npm clean && webpack --mode=development --progress",
     "clean": "rm -rf public/js"
   },
