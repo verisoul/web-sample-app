@@ -52,6 +52,8 @@ app.get("/api/account/:accountId", async (req, res) => {
 
         // DECISIONING LOGIC SAMPLE
         // customize your own logic here
+        console.log(`Enroll logic is: `);
+        console.log(`numAccounts: ${numAccounts}`);
         if (numAccounts === 0) { // if user is unique (has no other accounts in the project), then enroll
             let enroll = await fetch(`${API_URL}/account/${accountId}/enroll`, {
                 method: 'POST',
@@ -87,6 +89,9 @@ app.get("/api/wallet-list", async (req, res) => {
         }
 
         let results = await response.json();
+
+        // filter out accounts that are not enrolled
+        results = results.filter(account => account?.isEnrolled);
 
         res.status(200).send(results);
     } catch (err) {

@@ -41,7 +41,7 @@ const WalletList = () => {
 
     const toggleAccount = async (account) => {
         try {
-            const response = await fetch(`http://localhost:4001/api/account/${account.accountId}`);
+            const response = await fetch(`http://localhost:4001/api/account/${account.accountId}/toggle`);
             if (!response.ok) {
                 throw new Error(`failed to get Verisoul session: ${response.status}`);
             }

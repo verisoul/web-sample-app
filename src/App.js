@@ -27,7 +27,7 @@ const App = () => {
     const eventHandler = async (event) => {
         if (event?.step === 'Complete') {
             try {
-                const response = await fetch(`http://localhost:4001/api/account/${event?.accountId}`);
+                const response = await fetch(`http://localhost:4001/api/account/${event?.data?.account_id}`);
                 if (!response.ok) {
                     throw new Error(`failed to get Verisoul session: ${response.status}`);
                 }
