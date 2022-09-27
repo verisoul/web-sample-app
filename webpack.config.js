@@ -4,7 +4,6 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   target: 'web',
-  watch: true,
   entry: path.resolve(__dirname, 'src', 'index.js'),
   stats: {warnings:false},
   output: {

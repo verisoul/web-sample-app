@@ -12,8 +12,8 @@
     "react-dom": "^18.2.0"
   },
   "scripts": {
-    "start": "npm run clean && webpack --mode=development --progress & webpack serve --mode=development",
-    "build": "npm clean && webpack --mode=development --progress",
+    "start": "npm run build && node backend/server.js & webpack serve --mode=development",
+    "build": "npm run clean && webpack --mode=development --progress",
     "clean": "rm -rf public/js"
   },
   "eslintConfig": {
