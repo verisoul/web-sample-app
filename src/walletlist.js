@@ -25,8 +25,7 @@ const WalletList = () => {
         const walletRows = wallets?.map((entry, index) => {
             return (
                 <tr key={index}>
-                    <td>{entry.attributes.wallet}</td>
-                    <td>
+                    <td>{entry.attributes.wallet}{' '}
                         <button onClick={() => toggleAccount(entry)}>
                             {entry.isBlocked
                                 ? 'Unblock'
@@ -45,6 +44,8 @@ const WalletList = () => {
             if (!response.ok) {
                 throw new Error(`failed to get Verisoul session: ${response.status}`);
             }
+
+            await getWallets();
         } catch (err) {
             console.error(err);
         }

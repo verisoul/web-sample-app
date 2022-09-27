@@ -29,7 +29,7 @@ const App = () => {
             try {
                 const response = await fetch(`http://localhost:4001/api/account/${event?.data?.account_id}`);
                 if (!response.ok) {
-                    throw new Error(`failed to get Verisoul session: ${response.status}`);
+                    throw new Error(`failed to get Verisoul account: ${response.status}`);
                 }
 
                 setTimeout(() => { // show the completed screen for a few seconds
