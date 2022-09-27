@@ -1,10 +1,10 @@
+import React, {useState} from 'react';
 // import Verisoul from '@verisoul/ui';
 import Verisoul from './verisoul';
-import React, {useState} from 'react';
-import WalletList from "./walletlist";
+import WalletList from './walletlist';
 
 const App = () => {
-    const [sessionId, setSessionId] = useState();
+    const [sessionToken, setSessionToken] = useState();
     const [showVerisoul, setShowVerisoul] = useState(false);
 
     const initVerisoul = async () => {
@@ -14,9 +14,10 @@ const App = () => {
                 throw new Error(`failed to init Verisoul session: ${response.status}`);
             }
 
-            const {sessionId} = await response.json();
+            const {sessionToken} = await response.json();
+            console.log(sessionToken);
 
-            setSessionId(sessionId);
+            setSessionToken(sessionToken);
             setShowVerisoul(true);
         } catch (err) {
             console.error(err);
@@ -42,8 +43,8 @@ const App = () => {
 
     return (
         <div>
-            {showVerisoul && sessionId
-                ? <Verisoul session={sessionId}
+            {showVerisoul && sessionToken
+                ? <Verisoul session={sessionToken}
                             eventHandler={eventHandler}
                             models={'/js/auth-sdk'}
                             environment={'local'}/>

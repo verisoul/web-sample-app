@@ -9,13 +9,14 @@ app.use(express.json());
 
 const API_URL = process.env.VERISOUL_API_URL;
 const headers = {
-    'Content-Type': 'application/json',
     'project_id': 1,
     'x-api-key': process.env.VERISOUL_API_KEY
 };
 
 app.get("/api/session", async (req, res) => {
     try {
+        // For more information on creating a session token
+        // See https://docs.verisoul.xyz/reference/api-reference/session-token
         let response = await fetch(`${API_URL}/session`, {
             method: 'POST',
             headers
@@ -25,18 +26,17 @@ app.get("/api/session", async (req, res) => {
             throw new Error(`failed to create Verisoul session: ${response.status}`);
         }
 
-        let {sessionId} = await response.json();
+        let {sessionToken} = await response.json();
 
-        res.status(200).send({sessionId})
+        res.status(200).send({sessionToken})
     } catch (err) {
         res.status(500).send({error: err.message})
     }
 });
 
 app.get("/api/account/:accountId", async (req, res) => {
-    let accountId = req.params?.accountId;
-
     try {
+        let accountId = req.params?.accountId;
         let response = await fetch(`${API_URL}/account/${accountId}`, {
             method: 'GET',
             headers,
@@ -76,9 +76,8 @@ app.get("/api/account/:accountId", async (req, res) => {
 });
 
 app.get("/api/wallet-list", async (req, res) => {
-    ;
     try {
-        let response = await fetch(`${API_URL}/account`, {
+        let response = await fetch(`${API_URL}/accounts`, {
             method: 'GET',
             headers
         });
@@ -89,6 +88,41 @@ app.get("/api/wallet-list", async (req, res) => {
 
         let results = await response.json();
 
+        res.status(200).send(results);
+    } catch (err) {
+        res.status(500).send({error: err.message})
+    }
+});
+
+app.get("/api/account/:accountId/toggle", async (req, res) => {
+    try {
+        let accountId = req.params?.accountId;
+        let response = await fetch(`${API_URL}/account/${accountId}`, {
+            method: 'GET',
+            headers,
+            redirect: 'follow'
+        });
+        if (!response.ok) {
+            throw new Error(`failed to get Verisoul account: ${response.status}`);
+        }
+
+        let {isBlocked} = await response.json();
+        let action = 'block';
+        if (isBlocked) action = 'unblock';
+
+        // For more information on block/unblocking accounts
+        // see https://docs.verisoul.xyz/reference/api-reference/blocklist
+        let toggle = await fetch(`${API_URL}/${action}/${accountId}`, {
+            method: 'POST',
+            headers,
+            redirect: 'follow'
+        });
+
+        if (!toggle.ok) {
+            throw new Error(`failed to toggle Verisoul account: ${toggle.status}`);
+        }
+
+        let results = await toggle.json();
         res.status(200).send(results);
     } catch (err) {
         res.status(500).send({error: err.message})

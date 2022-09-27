@@ -25,11 +25,29 @@ const WalletList = () => {
         const walletRows = wallets?.map((entry, index) => {
             return (
                 <tr key={index}>
-                    <td>{entry.wallet}</td>
+                    <td>{entry.attributes.wallet}</td>
+                    <td>
+                        <button onClick={() => toggleAccount(entry)}>
+                            {entry.isBlocked
+                                ? 'Unblock'
+                                : 'Block'}
+                        </button>
+                    </td>
                 </tr>
             )
         });
         return walletRows;
+    }
+
+    const toggleAccount = async (account) => {
+        try {
+            const response = await fetch(`http://localhost:4001/api/account/${account.accountId}`);
+            if (!response.ok) {
+                throw new Error(`failed to get Verisoul session: ${response.status}`);
+            }
+        } catch (err) {
+            console.error(err);
+        }
     }
 
 
