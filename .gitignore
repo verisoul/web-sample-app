@@ -12,6 +12,7 @@
 # production
 /public/js
 .env
+.npmrc
 
 # misc
 .DS_Store
