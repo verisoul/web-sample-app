@@ -29,7 +29,7 @@ npm start
 Comprehensive documentation about Verisoul's Javascript SDK and API can be found at [docs.verisoul.xyz](https://docs.verisoul.xyz/). Additionally, reach out to Verisoul at [support@verisoul.xyz](mailto:support@verisoul.xyz) for any questions or feedback.
 
 ## Troubleshooting
-If you are running into issues running the app make sure you have copied `node_modules/@verisoul/ui/auth-sdk` into your build. You can specify the directory in the SDK by setting `models_path`. This is done for you in the sample app like so:
+If you are running into issues running the app make sure you have copied `node_modules/@verisoul/ui/auth-sdk` into your build. You can specify the directory in the SDK by setting `models`. This is done for you in the sample app like so:
 ```javascript
 new CopyPlugin({
             patterns: [
