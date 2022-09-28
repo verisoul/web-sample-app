@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require('webpack');
+const dotenv = require('dotenv').config({path: __dirname + '/.env'});
 const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
@@ -44,7 +45,9 @@ module.exports = {
         ],
     },
     plugins: [
-        new webpack.EnvironmentPlugin({...process.env}),
+        new webpack.DefinePlugin({
+            'process.env': JSON.stringify(process.env)
+        }),
         new webpack.ProvidePlugin({
             "React": "react",
         }),
