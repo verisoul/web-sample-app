@@ -50,8 +50,7 @@ app.get("/api/account/:accountId", async (req, res) => {
         // for other fields in the response like isBlocked, hasBlockedAccounts, etc.
         let {attributes, numAccounts} = await response.json();
 
-        // DECISIONING LOGIC SAMPLE
-        // customize your own logic here
+        // Decisioning logic sample; customize to your needs
         if (numAccounts === 0) { // if user is unique (has no other accounts in the project), then enroll
             let enroll = await fetch(`${API_URL}/account/${accountId}/enroll`, {
                 method: 'POST',

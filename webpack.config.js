@@ -68,7 +68,7 @@ module.exports = {
       },
     },
     historyApiFallback: true,
-    port: 4001,
+    port: process.env.CLIENT_PORT || 4001,
     open: true
   },
 };
