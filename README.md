@@ -3,16 +3,16 @@
 ## Overview
 The purpose of this app is to demonstrate Verisoul's Javascript SDK by use of the private npm module. The repository contains a [React](https://reactjs.org/) app that uses Verisoul NPM package `@verisoul/ui` alongside an [Express](https://expressjs.com/) API server.
 
-_To run the app a Verisoul API Key and NPM token are required._ Schedule a call [here](https://meetings.hubspot.com/henry-legard) to get set started. 
+_To run the app a Verisoul API Key, Project ID and NPM token are required._ Schedule a call [here](https://meetings.hubspot.com/henry-legard) to get set started. 
 
 ## Getting Started
 1. Clone the repository
 ```bash
 git clone https://github.com/verisoul/web-sample-app.git && cd web-sample-app
 ```
-2. Copy `.env.example` to `.env` and fill in the `VERISOUL_API_KEY` and `NPM_TOKEN` values
+2. Copy `.env.sample` to `.env` and fill in the `VERISOUL_API_KEY`, `VERISOUL_PROJECT_ID`, and `NPM_TOKEN` values
 ```bash
-cp .env.example .env
+cp .env.sample .env
 ```
 3. Install dependencies
 ```bash
@@ -25,3 +25,9 @@ npm start
 
 ## Questions and Feedback
 Comprehensive documentation about Verisoul's Javascript SDK and API can be found at [docs.verisoul.xyz](https://docs.verisoul.xyz/). Additionally, reach out to Verisoul at [support@verisoul.xyz](mailto:support@verisoul.xyz) for any questions or feedback.
+
+## Troubleshooting
+Note on windows machines you must type the following before running `npm install`
+```bash
+set NPM_TOKEN=<your_token_here>
+```

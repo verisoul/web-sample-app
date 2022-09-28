@@ -9,7 +9,7 @@ app.use(express.json());
 
 const API_URL = process.env.VERISOUL_API_URL;
 const headers = {
-    'project_id': 1,
+    'project_id': process.env.VERISOUL_PROJECT_ID,
     'x-api-key': process.env.VERISOUL_API_KEY
 };
 
