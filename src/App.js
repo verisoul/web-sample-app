@@ -46,7 +46,7 @@ const App = () => {
                 ? <Verisoul session={sessionToken}
                             eventHandler={eventHandler}
                             models={'/js/auth-sdk'}
-                            environment={'sandbox'}/>
+                            environment={process.env.REACT_APP_VERISOUL_ENV}/>
                 : <div className={'app'}>
                     <h1>Verisoul Sample Web App</h1>
                     <button onClick={initVerisoul}>Verify Wallet</button>

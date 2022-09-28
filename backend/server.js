@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const API_URL = process.env.VERISOUL_API_URL;
+const API_URL = `https://api-${process.env.REACT_APP_VERISOUL_ENV}.verisoul.xyz`;
 const headers = {
     'project_id': process.env.VERISOUL_PROJECT_ID,
     'x-api-key': process.env.VERISOUL_API_KEY
@@ -50,8 +50,7 @@ app.get("/api/account/:accountId", async (req, res) => {
         // for other fields in the response like isBlocked, hasBlockedAccounts, etc.
         let {attributes, numAccounts} = await response.json();
 
-        // DECISIONING LOGIC SAMPLE
-        // customize your own logic here
+        // Decisioning logic sample; customize to your needs
         if (numAccounts === 0) { // if user is unique (has no other accounts in the project), then enroll
             let enroll = await fetch(`${API_URL}/account/${accountId}/enroll`, {
                 method: 'POST',
