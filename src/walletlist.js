@@ -21,21 +21,44 @@ const WalletList = () => {
         }
     }
 
-    const makeWalletRows = () => {
-        const walletRows = wallets?.map((entry, index) => {
+    const makeTableHeader = () => {
+        let walletHeaderRow = Object.keys(wallets[0]).map((key, index) => {
+            return <th key={index}>{key}</th>
+        })
+        walletHeaderRow.unshift(<th key={wallets[0].length}>{' '}</th>);
+
+        return walletHeaderRow;
+    }
+
+    const makeTableRows = () => {
+        let walletRows = wallets?.map((entry, index) => {
             return (
                 <tr key={index}>
-                    <td>{entry.attributes.wallet}{' '}
-                        <button onClick={() => toggleAccount(entry)}>
-                            {entry.isBlocked
-                                ? 'Unblock'
-                                : 'Block'}
-                        </button>
-                    </td>
+                    {mapEntryToRow(entry)}
                 </tr>
             )
         });
+
         return walletRows;
+    }
+
+    const mapEntryToRow = (entry) => {
+        let row = Object.values(entry).map((value, index) => {
+            if(typeof value === 'object') {
+                return <td key={index}>{JSON.stringify(value)}</td>
+            }
+            return <td key={index}>{JSON.stringify(value)}</td>;
+        })
+
+        row.unshift(<td>
+            <button onClick={() => toggleAccount(entry)}>
+                {entry.isBlocked
+                    ? 'Unblock'
+                    : 'Block'}
+            </button>
+        </td>);
+
+        return row;
     }
 
     const toggleAccount = async (account) => {
@@ -53,14 +76,14 @@ const WalletList = () => {
 
 
     return (
-        <div>
+        <div style={{paddingTop: '40px'}}>
             {wallets && wallets?.length > 0
                 ? <table className={'list'}>
                     <tbody>
                     <tr>
-                        <th>Verified Wallets</th>
+                        {makeTableHeader()}
                     </tr>
-                    {makeWalletRows()}
+                    {makeTableRows()}
                     </tbody>
                 </table>
                 : null
