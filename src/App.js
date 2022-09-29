@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Verisoul from '@verisoul/ui';
-import WalletList from './walletlist';
+import WalletList from './accountlist';
 
 const App = () => {
     const [sessionToken, setSessionToken] = useState();

@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 
-const WalletList = () => {
-    const [wallets, setWallets] = useState([]);
+const AccountList = () => {
+    const [accounts, setAccounts] = useState([]);
 
     useEffect(() => {
-        getWallets().catch(console.error);
+        getAccounts().catch(console.error);
     }, []);
 
-    const getWallets = async () => {
+    const getAccounts = async () => {
         try {
             const response = await fetch(`http://localhost:4001/api/wallet-list`);
             if (!response.ok) {
@@ -15,23 +15,25 @@ const WalletList = () => {
             }
 
             const wallets = await response.json();
-            setWallets(wallets);
+            setAccounts(wallets);
         } catch (err) {
             console.error(err);
         }
     }
 
     const makeTableHeader = () => {
-        let walletHeaderRow = Object.keys(wallets[0]).map((key, index) => {
+        let keyList = Object.keys(accounts[0]);
+
+        let headerRow = keyList.map((key, index) => {
             return <th key={index}>{key}</th>
         })
-        walletHeaderRow.unshift(<th key={wallets[0].length}>{' '}</th>);
+        headerRow.unshift(<th key={keyList.length}>{' '}</th>);
 
-        return walletHeaderRow;
+        return headerRow;
     }
 
     const makeTableRows = () => {
-        let walletRows = wallets?.map((entry, index) => {
+        let walletRows = accounts?.map((entry, index) => {
             return (
                 <tr key={index}>
                     {mapEntryToRow(entry)}
@@ -43,21 +45,18 @@ const WalletList = () => {
     }
 
     const mapEntryToRow = (entry) => {
+        let valueList = Object.values(entry);
         let row = Object.values(entry).map((value, index) => {
-            if(typeof value === 'object') {
-                return <td key={index}>{JSON.stringify(value)}</td>
-            }
             return <td key={index}>{JSON.stringify(value)}</td>;
         })
 
-        row.unshift(<td>
+        row.unshift(<td key={valueList.length}>
             <button onClick={() => toggleAccount(entry)}>
                 {entry.isBlocked
                     ? 'Unblock'
                     : 'Block'}
             </button>
         </td>);
-
         return row;
     }
 
@@ -68,7 +67,7 @@ const WalletList = () => {
                 throw new Error(`failed to get Verisoul session: ${response.status}`);
             }
 
-            await getWallets();
+            await getAccounts();
         } catch (err) {
             console.error(err);
         }
@@ -77,7 +76,7 @@ const WalletList = () => {
 
     return (
         <div style={{paddingTop: '40px'}}>
-            {wallets && wallets?.length > 0
+            {accounts && accounts?.length > 0
                 ? <table className={'list'}>
                     <tbody>
                     <tr>
@@ -92,4 +91,4 @@ const WalletList = () => {
     );
 }
 
-export default WalletList;
+export default AccountList;
