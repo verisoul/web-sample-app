@@ -30,7 +30,7 @@ function unlimitedAccountsUnlessBlockedInLastMonth(account) {
     return true;
 }
 
-export {
+module.exports = {
     onePersonOneAccount,
     unlimitedAccountsUnlessBlocked,
     onePersonThreeAccountsUnlessBlocked,
