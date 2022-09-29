@@ -1,4 +1,5 @@
 require("dotenv").config({path: '.env'});
+const {onePersonOneAccount} = require('./decision.js');
 const express = require('express');
 const fetch = require('node-fetch');
 const cors = require("cors");
@@ -12,6 +13,12 @@ const headers = {
     'project_id': process.env.VERISOUL_PROJECT_ID,
     'x-api-key': process.env.VERISOUL_API_KEY
 };
+
+// Decisioning logic sample
+// see other samples in backend/decision.js, customize to your needs
+const decision = (account) => {
+    return onePersonOneAccount(account);
+}
 
 app.get("/api/session", async (req, res) => {
     try {
@@ -47,11 +54,10 @@ app.get("/api/account/:accountId", async (req, res) => {
         }
 
         // See https://docs.verisoul.xyz/reference/api-reference/accounts
-        // for other fields in the response like isBlocked, hasBlockedAccounts, etc.
-        let {attributes, numAccounts} = await response.json();
+        // for documentation of metadata and attributes
+        let account = await response.json();
 
-        // Decisioning logic sample; customize to your needs
-        if (numAccounts === 0) { // if user is unique (has no other accounts in the project), then enroll
+        if (decision(account)) {
             let enroll = await fetch(`${API_URL}/account/${accountId}/enroll`, {
                 method: 'POST',
                 headers,
