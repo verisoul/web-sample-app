@@ -21,7 +21,7 @@ function onePersonThreeAccountsUnlessBlocked(account) {
 }
 
 function unlimitedAccountsUnlessBlockedInLastMonth(account) {
-    let timeSinceBlock = Date.now() - Date.parse(account.last_blocked_at);
+    let timeSinceBlock = Date.now() - Date.parse(account.lastBlockedAt);
     let diffDays = Math.ceil(timeSinceBlock / (1000 * 60 * 60 * 24));
 
     if (account.hasBlockedAccounts === true && diffDays > 30) {
