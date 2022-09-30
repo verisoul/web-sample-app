@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const API_URL = `https://api-${process.env.REACT_APP_VERISOUL_ENV}.verisoul.xyz`;
+const API_URL = `https://api.${process.env.REACT_APP_VERISOUL_ENV}.verisoul.xyz`;
 const headers = {
     'project_id': process.env.VERISOUL_PROJECT_ID,
     'x-api-key': process.env.VERISOUL_API_KEY
@@ -72,7 +72,7 @@ app.get("/api/account/:accountId", async (req, res) => {
             }
         }
 
-        res.status(200).send(attributes);
+        res.status(200).send(account);
     } catch (err) {
         console.error(err);
 
