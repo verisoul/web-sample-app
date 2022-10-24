@@ -43,10 +43,13 @@ const App = () => {
     return (
         <div>
             {showVerisoul && sessionToken
-                ? <Verisoul session={sessionToken}
-                            eventHandler={eventHandler}
-                            models={'/js/auth-sdk'}
-                            environment={process.env.REACT_APP_VERISOUL_ENV}/>
+                ? <iframe
+                    width={800}
+                    height={800}
+                    allow={'camera;microphone;fullscreen'}
+                    allowFullScreen={true}
+                    src={`https://app.dev.verisoul.xyz?session=${sessionToken}`}
+                ></iframe>
                 : <div className={'app'}>
                     <h1>Verisoul Sample Web App</h1>
                     <button onClick={initVerisoul}>Verify Wallet</button>
@@ -58,3 +61,17 @@ const App = () => {
 }
 
 export default App;
+
+// <div>
+//     {showVerisoul && sessionToken
+//         ? <Verisoul session={sessionToken}
+//                     eventHandler={eventHandler}
+//                     models={'/js/auth-sdk'}
+//                     environment={process.env.REACT_APP_VERISOUL_ENV}/>
+//         : <div className={'app'}>
+//             <h1>Verisoul Sample Web App</h1>
+//             <button onClick={initVerisoul}>Verify Wallet</button>
+//             <WalletList/>
+//         </div>
+//     }
+// </div>
