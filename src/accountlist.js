@@ -11,11 +11,11 @@ const AccountList = () => {
         try {
             const response = await fetch(`http://localhost:4001/api/wallet-list`);
             if (!response.ok) {
-                throw new Error(`Failed to get verified wallets: ${response.status}`);
+                throw new Error(`Failed to get verified accounts: ${response.status}`);
             }
 
-            const wallets = await response.json();
-            setAccounts(wallets);
+            const accounts = await response.json();
+            setAccounts(accounts);
         } catch (err) {
             console.error(err);
         }
