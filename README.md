@@ -1,7 +1,7 @@
 # Verisoul Web Sample App
 
 ## Overview
-The purpose of this app is to demonstrate Verisoul's Javascript SDK by use of the private npm module. The repository contains a [React](https://reactjs.org/) app that uses Verisoul NPM package `@verisoul/ui` alongside an [Express](https://expressjs.com/) API server.
+The purpose of this app is to demonstrate Verisoul's Javascript SDK by use of the private npm module. The repository contains a [React](https://reactjs.org/) app that uses Verisoul uniqueness NPM package `@verisoul/ui` alongside an [Express](https://expressjs.com/) API server. The recommended integration can be seen [here](https://github.com/verisoul/cra-sample-app). However, if your use case requires uniqueness to be fully integrated within your site then this repository can be a good starting point. 
 
 _To run the app a Verisoul API Key, Project ID and NPM token are required._ Schedule a call [here](https://meetings.hubspot.com/henry-legard) to get started. 
 
@@ -12,7 +12,7 @@ git clone https://github.com/verisoul/web-sample-app.git && cd web-sample-app
 ```
 2. Copy your `NPM_TOKEN` into the `.npmrc` file
 
-3. Copy `.env.sample` to `.env` and fill in the `VERISOUL_API_KEY`, `VERISOUL_PROJECT_ID`, and `NPM_TOKEN` values before sourcing the file.
+3. Copy `.env.sample` to `.env` and fill in the `VERISOUL_API_KEY` and `VERISOUL_PROJECT_ID` values before sourcing the file.
 ```bash
 cp .env.sample .env
 ```
